@@ -1,0 +1,59 @@
+@import "colors.css";
+
+* {
+    color: @onSurface;
+    font-family: 'JetBrainsMono Nerd Font';
+    border-radius: 25px;
+    padding: 2px;
+}
+
+window#waybar {
+  background-color: @surface;
+  margin: 4px 0px;
+}
+
+.modules-left {
+  margin-left: 8px;
+}
+
+.modules-right {
+  margin-right: 8px;
+}
+
+#workspaces {
+  background-color: @surface_container;
+  margin: 4px 7.5px;
+}
+
+#workspaces button {
+  all: initial;
+  margin: 0 1.5px;
+  min-width: 9px;
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
+}
+
+#tray,
+#cpu,
+#network,
+#pulseaudio,
+#clock,
+#custom-power,
+#window {
+  margin: 4px 7.5px;
+  background-color: @surface_container;
+}
+
+tooltip {
+  padding: 2px;
+}
+
+#clock {
+  margin-left: 8.75px;
+}
+
+.hidden {
+  opacity: 0;
+}

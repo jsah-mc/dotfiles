@@ -1,0 +1,7 @@
+pgrep waybar >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+    killall waybar
+    waybar
+else
+    waybar
+fi

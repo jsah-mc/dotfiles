@@ -59,30 +59,25 @@ install_pacman_packages() {
   done
 }
 
-# Install yay
+
 install_yay() {
-  if command -v yay >/dev/null 2>&1; then
-    echo "✅ yay is already installed. Skipping."
-    return
-  fi
-
-  if ! gum confirm "Install yay (AUR helper)?"; then
-    echo "Skipping yay installation."
-    return
-  fi
-
-  gum spin --spinner points --title "Building yay from AUR" -- bash -c '
-    set -e
-    tmpdir="/tmp/yaybuild_$$"
-    rm -rf "$tmpdir"
-    git clone https://aur.archlinux.org/yay.git "$tmpdir"
-    cd "$tmpdir"
-    makepkg -si --noconfirm
-  '
-
-  echo "✅ yay installed."
+    if [[ ! $(_isInstalled "base-devel") == 0 ]]; then
+        sudo pacman --noconfirm -S "base-devel"
+    fi
+    if [[ ! $(_isInstalled "git") == 0 ]]; then
+        sudo pacman --noconfirm -S "git"
+    fi
+    if [ -d $HOME/Downloads/yay-bin ]; then
+        rm -rf $HOME/Downloads/yay-bin
+    fi
+    SCRIPT=$(realpath "$0")
+    temp_path=$(dirname "$SCRIPT")
+    git clone https://aur.archlinux.org/yay-bin.git $HOME/Downloads/yay-bin
+    cd $HOME/Downloads/yay-bin
+    makepkg -si
+    cd $temp_path
+    echo ":: yay has been installed successfully."
 }
-
 # Install AUR packages
 install_aur_packages() {
   for pkg in "${YAY_PACKAGES[@]}"; do

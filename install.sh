@@ -17,7 +17,7 @@ echo
 
 # Check gum
 if ! command -v gum >/dev/null 2>&1; then
-    echo "Gum not found, installing..."
+    echo "⚠️  Gum not found, installing..."
     sudo pacman -S --noconfirm gum
 else
     echo "✅ Gum is installed."

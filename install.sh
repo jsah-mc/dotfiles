@@ -112,15 +112,11 @@ install_pacman_packages() {
 install_aur_packages() {
   for pkg in "${YAY_PACKAGES[@]}"; do
     gum spin --spinner points --title "Installing AUR package $pkg with yay" -- bash -c "
-      set -e
-      if yay -S --noconfirm --needed \"$pkg\"; then
-        echo '✅ $pkg installed successfully.'
-      else
-	echo '❌ Failed to install $pkg.' >&2
-      fi
+      yay -S --noconfirm --needed \"$pkg\" || echo '❌ Failed to install $pkg' >&2
     "
   done
 }
+
 
 install_yay() {
   if command -v yay >/dev/null 2>&1; then

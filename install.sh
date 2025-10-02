@@ -59,6 +59,16 @@ install_pacman_packages() {
   done
 }
 
+_isInstalled() {
+    package="$1"
+    check="$(sudo pacman -Qs --color always "${package}" | grep "local" | grep "${package} ")"
+    if [ -n "${check}" ]; then
+        echo 0
+        return #true
+    fi
+    echo 1
+    return #false
+}
 
 install_yay() {
     if [[ ! $(_isInstalled "base-devel") == 0 ]]; then

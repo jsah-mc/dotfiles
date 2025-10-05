@@ -49,6 +49,8 @@ PACMAN_PACKAGES=(
 YAY_PACKAGES=(
   ttf-material-symbols-variable-git
   wlogout
+  matugen-bin
+  
 )
 
 # Install pacman packages
@@ -103,9 +105,9 @@ install_aur_packages
 
 # Stow dotfiles
 git clone https://github.com/jsah-mc/dotfiles.git ~/dotfiles || true
-if [ -d "$HOME/dotfiles/config" ]; then
-  if gum confirm "Found ~/dotfiles/config. Use stow to symlink config folders?"; then
-    cd "$HOME/dotfiles/config"
+if [ -d "$HOME/dotfiles/" ]; then
+  if gum confirm "Found ~/dotfiles/. Use stow to symlink config folders?"; then
+    cd "$HOME/dotfiles/"
     for dir in */ ; do
       gum spin --spinner points --title "Stowing $dir" -- stow "$dir"
     done
@@ -114,7 +116,7 @@ if [ -d "$HOME/dotfiles/config" ]; then
     echo "Skipping stow config."
   fi
 else
-  echo "No ~/dotfiles/config found, skipping stow."
+  echo "No ~/dotfiles/ found, skipping stow."
 fi
 
 # Change default shell

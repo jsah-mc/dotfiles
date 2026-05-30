@@ -1,0 +1,10 @@
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Local generated backups from theme scripts.
+*.bak.*
+
+# Runtime/cache data should not live in the repo.
+.cache/

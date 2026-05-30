@@ -1,0 +1,19 @@
+{
+  "type": "theme",
+  "name": "matugen",
+  "colors": {
+    "editor.background": "#0e1416",
+    "editor.foreground": "#dee3e5",
+    "editorCursor.foreground": "#83d2e4",
+    "editor.selectionBackground": "#83d2e4",
+    "editor.lineHighlightBackground": "#0e1416",
+    "editorLineNumber.foreground": "#899295",
+    "sideBar.background": "#0e1416",
+    "statusBar.background": "#0e1416",
+    "panel.background": "#0e1416",
+    "button.background": "#83d2e4",
+    "button.foreground": "#00363f",
+    "accent": "#bdc5eb",
+    "error": "#ffb4ab"
+  }
+}

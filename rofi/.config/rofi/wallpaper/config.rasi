@@ -1,0 +1,27 @@
+@import "../theme-change/config.rasi"
+
+configuration {
+    show-icons: true;
+}
+
+window {
+    width: 720px;
+}
+
+listview {
+    lines: 6;
+    fixed-height: true;
+}
+
+element {
+    padding: 6px;
+}
+
+element-icon {
+    size: 96px;
+    border-radius: 4px;
+}
+
+element-text {
+    vertical-align: 0.5;
+}

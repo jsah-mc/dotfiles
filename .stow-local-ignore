@@ -1,0 +1,6 @@
+(^|/)\.git(/|$)
+^README\.md$
+^\.gitignore$
+^\.stow-local-ignore$
+.*\.bak\..*
+.*~

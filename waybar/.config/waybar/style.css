@@ -1,0 +1,260 @@
+@import "colors/colors.css";
+
+* {
+    font-family: "JetBrainsMono Nerd Font Propo", "Noto Sans", sans-serif;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    text-shadow: none;
+    transition-property: background-color, color, border-color, min-width, padding, margin;
+    transition-duration: 180ms;
+    transition-timing-function: ease-out;
+}
+
+#waybar {
+    font-weight: 700;
+    background: transparent;
+    font-size: 12px;
+    color: @fg;
+}
+
+#temperature,
+#bluetooth,
+#battery,
+#memory,
+#mpris,
+#window,
+#cpu,
+#load,
+#network,
+#tray,
+#backlight,
+#pulseaudio,
+#custom-appearance,
+#custom-ctlcenter,
+#custom-power {
+    padding: 0 6px;
+}
+
+#backlight-slider,
+#pulseaudio-slider {
+    padding: 0 8px 0 2px;
+}
+
+#right,
+#left,
+#right-hidden-top,
+#left-hidden-top,
+#clock,
+#custom-start {
+    background: alpha(@module-bg, 0.88);
+    border: 1px solid alpha(@blue, 0.18);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+#right,
+#left,
+#right-hidden-top,
+#left-hidden-top {
+    padding: 0 8px;
+    border-radius: 999px;
+}
+
+#right,
+#left {
+    margin: 0 6px;
+}
+
+#right-hidden-top,
+#left-hidden-top {
+    padding: 0 8px;
+}
+
+#custom-start {
+    color: @blue;
+    font-size: 14px;
+    min-width: 22px;
+    padding: 0 5px;
+    margin: 0 6px 0 0;
+    border-radius: 999px;
+}
+
+#custom-start:hover {
+    background: @blue;
+    color: @module-bg;
+    border-color: @blue;
+}
+
+#clock {
+    padding: 0 14px;
+    border-radius: 999px;
+}
+
+#clock:hover,
+#right:hover,
+#left:hover,
+#right-hidden-top:hover,
+#left-hidden-top:hover {
+    border-color: alpha(@blue, 0.38);
+}
+
+#custom-appearance {
+    color: @green;
+    margin-left: 6px;
+}
+
+#custom-appearance:hover {
+    color: @module-bg;
+    background: @green;
+    border-radius: 999px;
+}
+
+#custom-ctlcenter {
+    color: @blue;
+    margin-left: 5px;
+}
+
+#custom-ctlcenter:hover {
+    color: @module-bg;
+    background: @blue;
+    border-radius: 999px;
+}
+
+#custom-power {
+    color: @red;
+}
+
+#custom-power:hover {
+    color: @module-bg;
+    background: @red;
+    border-radius: 999px;
+}
+
+#cpu.critical,
+#memory.critical,
+#battery.critical,
+#network.disabled,
+#temperature.critical,
+#network.disconnected,
+#power-profiles-daemon.performance {
+    color: @red;
+}
+
+#cpu.warning,
+#memory.warning,
+#battery.warning,
+#temperature.warning {
+    color: @yellow;
+    background: unset;
+}
+
+#power-profiles-daemon.power-saver {
+    color: @green;
+}
+
+#workspaces {
+    padding: 0 2px;
+    margin: 0 4px;
+}
+
+#workspaces button {
+    color: @inactive;
+    background: transparent;
+    border-radius: 999px;
+    min-width: 10px;
+    margin: 0 2px;
+    padding: 0 4px;
+}
+
+#workspaces button.empty {
+    color: alpha(@inactive, 0.55);
+    padding: 0 4px;
+}
+
+#workspaces button.visible,
+#workspaces button.active {
+    color: @module-bg;
+    background: @blue;
+    min-width: 22px;
+    padding: 0 8px;
+}
+
+#workspaces button.urgent {
+    color: @module-bg;
+    background: @red;
+}
+
+#workspaces button:hover {
+    color: @fg;
+    background: alpha(@blue, 0.22);
+    min-width: 24px;
+}
+
+#mpris {
+    color: @fg;
+}
+
+#mpris.paused {
+    color: @inactive;
+}
+
+#tray {
+    margin-left: 2px;
+}
+
+tooltip {
+    border: 1px solid alpha(@blue, 0.28);
+    border-radius: 12px;
+    background: alpha(@tooltip-bg, 0.98);
+}
+
+tooltip label {
+    padding: 5px 10px;
+    color: @fg;
+    font-weight: 700;
+}
+
+.popup * {
+    box-shadow: none;
+    outline: none;
+    border-radius: 10px;
+}
+
+menu {
+    border: 1px solid alpha(@blue, 0.25);
+    border-radius: 12px;
+    font-weight: 700;
+    color: @fg;
+    background: alpha(@tooltip-bg, 0.98);
+    padding: 6px;
+}
+
+menu > * {
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+menu > *:hover {
+    background-color: alpha(@blue, 0.22);
+    color: @fg;
+}
+
+slider {
+    opacity: 0;
+    box-shadow: none;
+}
+
+trough {
+    min-width: 54px;
+    min-height: 6px;
+    border-radius: 999px;
+    background: alpha(@inactive, 0.55);
+}
+
+trough highlight {
+    border-radius: 999px;
+    background-color: @fg;
+    background-image: none;
+}

@@ -56,3 +56,8 @@ git restore .
 - `xsettingsd`: GTK/XSettings integration
 - `zsh`: zsh shell config
 - `wallpapers`: wallpapers under `~/Pictures/wallpaper`
+
+## Credits
+- [mylinuxforwork/wallpaper](https://github.com/mylinuxforwork/wallpaper) for wallpapers
+- [cebm1nt/dotfiles](https://github.com/cebem1nt/dotfiles) for example waybar
+- [anhsirk0/rofi-config](https://github.com/anhsirk0/rofi-config) for rofi

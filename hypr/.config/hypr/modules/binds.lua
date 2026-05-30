@@ -16,6 +16,7 @@ hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("bash ~/.config/rofi/theme-ch
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("bash ~/.config/rofi/wallpaper/wallpaper-switcher.sh"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("zeditor"))
+hl.bind(mainMod .. " + ESCAPE", hl.dsp.exec_cmd("bash ~/.config/rofi/powermenu/powermenu.sh"))
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))

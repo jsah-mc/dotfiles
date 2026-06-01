@@ -11,7 +11,7 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(programs.menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("firefox"))
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("helium-browser"))
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("bash ~/.config/rofi/theme-change/theme-change.sh"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("bash ~/.config/rofi/wallpaper/wallpaper-switcher.sh"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))

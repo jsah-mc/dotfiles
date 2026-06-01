@@ -10,7 +10,10 @@ DOTFILE_PACKAGES=(
     tmux
     nvim
     zed
+    ags
     gtk
+    qt5ct-kde
+    qt6ct-kde
     matugen
     Kvantum
     xsettingsd
@@ -36,13 +39,17 @@ SYSTEM_PACKAGES=(
     kvantum
     xsettingsd
     swaync
+    aylurs-gtk-shell-git
+    libastal-git
+    libastal-io-git
+    libastal-meta
     jq
     playerctl
     brightnessctl
     wl-clipboard
     dolphin
-    qt6ct
-    qt5ct
+    qt6ct-kde
+    qt5ct-kde
     zsh
     fzf
     zoxide

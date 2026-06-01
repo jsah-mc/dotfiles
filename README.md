@@ -11,6 +11,7 @@ dotfiles/
   hypr/.config/hypr
   rofi/.config/rofi
   waybar/.config/waybar
+  ags/.config/ags
 ```
 
 ## Install On A Fresh System
@@ -35,7 +36,7 @@ After stowing, it initializes the theme from `~/Pictures/wallpaper/default.jpg` 
 If the files already exist in `~/.config`, Stow will report conflicts. To adopt existing files into this repo:
 
 ```sh
-stow --adopt -t "$HOME" hypr rofi waybar swaync kitty tmux nvim zed gtk matugen Kvantum xsettingsd zsh wallpapers
+stow --adopt -t "$HOME" hypr rofi waybar ags swaync kitty tmux nvim zed gtk qt5ct qt6ct matugen Kvantum xsettingsd zsh wallpapers
 git restore .
 ```
 
@@ -46,16 +47,27 @@ git restore .
 - `hypr`: Hyprland config and theme scripts
 - `rofi`: launchers, theme selector, wallpaper selector
 - `waybar`: bar config, modules, styles, context menus
+- `ags`: AGS/Astal shell entrypoint
 - `swaync`: notification center style
 - `kitty`: terminal colors/config
 - `tmux`: terminal multiplexer config
 - `zed`: editor settings
 - `gtk`: GTK 3 and GTK 4 theme overrides
+- `qt5ct`: Qt 5 platform config via `qt5ct-kde`
+- `qt6ct`: Qt 6 platform config via `qt6ct-kde`
 - `matugen`: matugen config/templates
 - `Kvantum`: Qt theme config
 - `xsettingsd`: GTK/XSettings integration
 - `zsh`: zsh shell config
 - `wallpapers`: wallpapers under `~/Pictures/wallpaper`
+
+## AGS/Astal Packages
+
+Install packages for the AGS v2 + Astal stack on Arch:
+
+```sh
+yay -S aylurs-gtk-shell-git libastal-git libastal-io-git libastal-meta
+```
 
 ## Credits
 - [mylinuxforwork/wallpaper](https://github.com/mylinuxforwork/wallpaper) for wallpapers

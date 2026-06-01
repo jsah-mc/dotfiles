@@ -79,7 +79,10 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 alias ls='ls --color'
 alias vim='nvim'
 alias c='clear'
-
+alias pki='yay -S '
+alias pkin='yay -S --noconfirm '
+alias pkc='yay '
+alias pku='yay -R'
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"

@@ -9,19 +9,45 @@ HYPR_COLORS="$XDG_CONFIG_HOME/hypr/modules/colors.lua"
 HYPRLOCK_CONF="$XDG_CONFIG_HOME/hypr/hyprlock.conf"
 WAYBAR_COLORS="$XDG_CONFIG_HOME/waybar/colors/colors.css"
 ROFI_COLORS="$XDG_CONFIG_HOME/rofi/colors/matugen.rasi"
+QUICKSHELL_BAR_PALETTE="$XDG_CONFIG_HOME/quickshell/bar/palette.json"
+QUICKSHELL_LAUNCHER_PALETTE="$XDG_CONFIG_HOME/quickshell/launcher/palette.json"
+QUICKSHELL_JSAH_PALETTE="$XDG_CONFIG_HOME/quickshell/jsah/palette.json"
 ZED_SETTINGS="$XDG_CONFIG_HOME/zed/settings.json"
+HELIUM_THEME_DIR="$XDG_CONFIG_HOME/helium-theme"
+HELIUM_FLAGS_CONF="$XDG_CONFIG_HOME/helium-browser-flags.conf"
+QT5CT_CONF="$XDG_CONFIG_HOME/qt5ct/qt5ct.conf"
+QT6CT_CONF="$XDG_CONFIG_HOME/qt6ct/qt6ct.conf"
+KVANTUM_CONFIG="$XDG_CONFIG_HOME/Kvantum/kvantum.kvconfig"
+KVANTUM_THEME_DIR="$XDG_CONFIG_HOME/Kvantum/Dotfiles"
+KVANTUM_BASE_THEME_DIR="/usr/share/Kvantum/KvAdaptaDark"
+KVANTUM_BASE_THEME_NAME="KvAdaptaDark"
 GTK3_CSS="$XDG_CONFIG_HOME/gtk-3.0/gtk.css"
 GTK4_CSS="$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
 GTK4_DARK_CSS="$XDG_CONFIG_HOME/gtk-4.0/gtk-dark.css"
 GTK3_SETTINGS="$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
 GTK4_SETTINGS="$XDG_CONFIG_HOME/gtk-4.0/settings.ini"
 XSETTINGS_CONF="$XDG_CONFIG_HOME/xsettingsd/xsettingsd.conf"
-KDE_GLOBALS="$XDG_CONFIG_HOME/kdeglobals"
 SWAYNC_STYLE="$XDG_CONFIG_HOME/swaync/style.css"
 NVIM_THEME="$XDG_CONFIG_HOME/nvim/lua/current-theme.lua"
 XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 CURRENT_THEME="$XDG_CACHE_HOME/current_theme"
 CURRENT_WALLPAPER="$XDG_CACHE_HOME/current_wallpaper"
+
+find_wallpaper_dir() {
+    local candidate
+
+    for candidate in \
+        "$HOME/Pictures/wallpaper" \
+        "$HOME/Pictures/wallpapers"
+    do
+        if [ -d "$candidate" ]; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+
+    return 1
+}
 
 list_themes() {
     for theme in "${THEMES[@]}"; do
@@ -218,33 +244,222 @@ hex_to_rgb() {
     printf "%d,%d,%d" 0x${hex:0:2} 0x${hex:2:2} 0x${hex:4:2}
 }
 
-update_qt() {
-    local bg=$(hex_to_rgb $1)
-    local bg_alt=$(hex_to_rgb $2)
-    local fg=$(hex_to_rgb $3)
-    local accent=$(hex_to_rgb $4)
+hex_to_rgb_list() {
+    local hex=${1#\#}
+    printf "%d, %d, %d" 0x${hex:0:2} 0x${hex:2:2} 0x${hex:4:2}
+}
 
-    # Simple kdeglobals update
-    cat >> "$KDE_GLOBALS" <<EOF
+write_qtct_config() {
+    local path=$1
 
-[Colors:Window]
-BackgroundNormal=$bg
-ForegroundNormal=$fg
-
-[Colors:Button]
-BackgroundNormal=$bg_alt
-ForegroundNormal=$fg
-
-[Colors:Selection]
-BackgroundNormal=$accent
-ForegroundNormal=$bg
-
-[Colors:View]
-BackgroundNormal=$bg_alt
-ForegroundNormal=$fg
+    mkdir -p "$(dirname "$path")"
+    cat > "$path" <<EOF
+[Appearance]
+custom_palette=false
+icon_theme=Papirus-Dark
+standard_dialogs=xdgdesktopportal
+style=kvantum
 EOF
-    # Remove duplicates and keep the last one (simplistic approach for kdeglobals)
-    # In a real script we'd use a proper ini parser, but this is a quick way to ensure QT picks up something.
+}
+
+update_qtct() {
+    write_qtct_config "$QT5CT_CONF"
+    write_qtct_config "$QT6CT_CONF"
+}
+
+update_kvantum() {
+    local bg=$1
+    local bg_alt=$2
+    local fg=$3
+    local accent=$4
+    local disabled=$5
+    local link=$6
+    local theme_name=Dotfiles
+    local base_config="$KVANTUM_BASE_THEME_DIR/$KVANTUM_BASE_THEME_NAME.kvconfig"
+    local base_svg="$KVANTUM_BASE_THEME_DIR/$KVANTUM_BASE_THEME_NAME.svg"
+    local theme_config="$KVANTUM_THEME_DIR/$theme_name.kvconfig"
+    local theme_svg="$KVANTUM_THEME_DIR/$theme_name.svg"
+    local tmp_config
+
+    mkdir -p "$KVANTUM_THEME_DIR"
+
+    cp "$base_config" "$theme_config"
+    cp "$base_svg" "$theme_svg"
+
+    tmp_config=$(mktemp)
+    awk -v window="$bg" \
+        -v base="$bg" \
+        -v alt_base="$bg_alt" \
+        -v button="$bg_alt" \
+        -v light="$fg" \
+        -v mid_light="$disabled" \
+        -v dark="$bg" \
+        -v mid="$bg_alt" \
+        -v highlight="$accent" \
+        -v inactive_highlight="$accent" \
+        -v text="$fg" \
+        -v window_text="$fg" \
+        -v button_text="$fg" \
+        -v disabled_text="$disabled" \
+        -v tooltip_text="$fg" \
+        -v highlight_text="$bg" \
+        -v link="$link" \
+        -v link_visited="$accent" '
+        BEGIN {
+            in_colors = 0
+        }
+        /^\[GeneralColors\]$/ {
+            print
+            print "window.color=" window
+            print "base.color=" base
+            print "alt.base.color=" alt_base
+            print "button.color=" button
+            print "light.color=" light
+            print "mid.light.color=" mid_light
+            print "dark.color=" dark
+            print "mid.color=" mid
+            print "highlight.color=" highlight
+            print "inactive.highlight.color=" inactive_highlight
+            print "text.color=" text
+            print "window.text.color=" window_text
+            print "button.text.color=" button_text
+            print "disabled.text.color=" disabled_text
+            print "tooltip.text.color=" tooltip_text
+            print "highlight.text.color=" highlight_text
+            print "link.color=" link
+            print "link.visited.color=" link_visited
+            print "progress.indicator.text.color=" text
+            in_colors = 1
+            next
+        }
+        in_colors && /^\[/ { in_colors = 0 }
+        in_colors { next }
+        { print }
+    ' "$theme_config" > "$tmp_config"
+    mv "$tmp_config" "$theme_config"
+
+    cat > "$KVANTUM_CONFIG" <<EOF
+[General]
+theme=$theme_name
+EOF
+}
+
+update_helium() {
+    local frame=$1
+    local toolbar=$2
+    local ntp_background=$3
+    local text=$4
+    local accent=$5
+    local tmp_flags
+
+    mkdir -p "$HELIUM_THEME_DIR"
+
+    cat > "$HELIUM_THEME_DIR/manifest.json" <<EOF
+{
+    "manifest_version": 2,
+    "version": "1.0",
+    "name": "Dotfiles Helium Theme",
+    "theme": {
+        "colors": {
+            "frame": [$(hex_to_rgb_list "$frame")],
+            "toolbar": [$(hex_to_rgb_list "$toolbar")],
+            "ntp_background": [$(hex_to_rgb_list "$ntp_background")],
+            "ntp_text": [$(hex_to_rgb_list "$text")],
+            "ntp_link": [$(hex_to_rgb_list "$accent")],
+            "ntp_section": [$(hex_to_rgb_list "$toolbar")],
+            "button_background": [$(hex_to_rgb_list "$accent")]
+        }
+    }
+}
+EOF
+
+    tmp_flags=$(mktemp)
+    if [ -f "$HELIUM_FLAGS_CONF" ]; then
+        awk '
+            /^# BEGIN dotfiles helium theme$/ { skip = 1; next }
+            /^# END dotfiles helium theme$/ { skip = 0; next }
+            !skip { print }
+        ' "$HELIUM_FLAGS_CONF" > "$tmp_flags"
+    fi
+
+    {
+        [ -s "$tmp_flags" ] && cat "$tmp_flags"
+        [ -s "$tmp_flags" ] && printf '\n'
+        echo "# BEGIN dotfiles helium theme"
+        echo "--load-extension=$HELIUM_THEME_DIR"
+        echo "# END dotfiles helium theme"
+    } > "$HELIUM_FLAGS_CONF"
+
+    rm -f "$tmp_flags"
+}
+
+update_helium_from_image() {
+    local image=$1
+    local json surface on_surface primary on_primary secondary tertiary error outline
+
+    if ! command -v matugen >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
+        echo "matugen and jq are required to build the Helium theme from wallpaper" >&2
+        return 1
+    fi
+
+    if [ -z "$image" ] || [ ! -f "$image" ]; then
+        echo "Helium wallpaper theme source not found: $image" >&2
+        return 1
+    fi
+
+    json=$(matugen image "$image" -j hex --dry-run --source-color-index 0 2>/dev/null || true)
+    if [ -z "${json:-}" ]; then
+        echo "matugen failed to produce json for Helium wallpaper theme" >&2
+        return 1
+    fi
+
+    get() { printf "%s" "$json" | jq -r "${1} // empty" 2>/dev/null || true; }
+    surface=$(get '.colors.surface.default.color')
+    on_surface=$(get '.colors.on_surface.default.color')
+    primary=$(get '.colors.primary.default.color')
+    on_primary=$(get '.colors.on_primary.default.color')
+    secondary=$(get '.colors.secondary.default.color')
+    tertiary=$(get '.colors.tertiary.default.color')
+    error=$(get '.colors.error.default.color')
+    outline=$(get '.colors.outline.default.color')
+
+    surface=${surface:-"#000000"}
+    on_surface=${on_surface:-"#ffffff"}
+    primary=${primary:-"${error:-$surface}"}
+    on_primary=${on_primary:-$on_surface}
+    secondary=${secondary:-$primary}
+    tertiary=${tertiary:-$primary}
+    error=${error:-"#ff0000"}
+    outline=${outline:-$on_surface}
+
+    update_helium "$surface" "$surface" "$surface" "$on_surface" "$primary"
+}
+
+update_quickshell() {
+    local bg=$1
+    local surface=$2
+    local fg=$3
+    local muted=$4
+    local accent=$5
+    local accent_fg=$6
+    local border=$7
+
+    mkdir -p "$(dirname "$QUICKSHELL_BAR_PALETTE")" "$(dirname "$QUICKSHELL_LAUNCHER_PALETTE")" "$(dirname "$QUICKSHELL_JSAH_PALETTE")"
+
+    cat > "$QUICKSHELL_BAR_PALETTE" <<EOF
+{
+  "bg": "$bg",
+  "surface": "$surface",
+  "text": "$fg",
+  "muted": "$muted",
+  "accent": "$accent",
+  "accentText": "$accent_fg",
+  "border": "$border"
+    }
+EOF
+
+    cp "$QUICKSHELL_BAR_PALETTE" "$QUICKSHELL_LAUNCHER_PALETTE"
+    cp "$QUICKSHELL_BAR_PALETTE" "$QUICKSHELL_JSAH_PALETTE"
 }
 
 update_gtk() {
@@ -609,11 +824,14 @@ EOF
 EOF
             update_zed "Catppuccin Mocha"
             update_gtk "#1e1e2e" "#181825" "#cdd6f4" "#89b4fa"
-            update_qt "#1e1e2e" "#181825" "#cdd6f4" "#89b4fa"
+            update_qtct
+            update_kvantum "#1e1e2e" "#181825" "#cdd6f4" "#89b4fa" "#6c7086" "#89b4fa"
+            update_quickshell "#1e1e2e" "#181825" "#cdd6f4" "#6c7086" "#89b4fa" "#1e1e2e" "#6c7086"
             update_kitty "#cdd6f4" "#1e1e2e" "#89b4fa" "#f38ba8" "#a6e3a1" "#f9e2af" "#89b4fa" "#cba6f7" "#94e2d5"
             update_nvim "catppuccin" "catppuccin" "#1e1e2e" "#313244" "#cdd6f4" "#6c7086" "#89b4fa" "#f38ba8" "#a6e3a1" "#f9e2af" "#89b4fa" "#cba6f7" "#94e2d5"
             update_hyprlock "#1e1e2e" "#cdd6f4" "#89b4fa" "#f38ba8"
             update_swaync "#1e1e2e" "#181825" "#cdd6f4" "#bac2de" "#6c7086" "#89b4fa" "#11111b" "#f38ba8" "#a6e3a1"
+            update_helium "#1e1e2e" "#181825" "#1e1e2e" "#cdd6f4" "#89b4fa"
             ;;
         "rose-pine")
             # Hyprland
@@ -650,11 +868,14 @@ EOF
 EOF
             update_zed "Rosé Pine"
             update_gtk "#191724" "#1f1d2e" "#e0def4" "#31748f"
-            update_qt "#191724" "#1f1d2e" "#e0def4" "#31748f"
+            update_qtct
+            update_kvantum "#191724" "#1f1d2e" "#e0def4" "#31748f" "#6e6a86" "#31748f"
+            update_quickshell "#191724" "#1f1d2e" "#e0def4" "#6e6a86" "#31748f" "#e0def4" "#6e6a86"
             update_kitty "#e0def4" "#191724" "#31748f" "#eb6f92" "#9ccfd8" "#f6c177" "#31748f" "#c4a7e7" "#9ccfd8"
             update_nvim "rose-pine" "rose-pine" "#191724" "#26233a" "#e0def4" "#6e6a86" "#31748f" "#eb6f92" "#9ccfd8" "#f6c177" "#31748f" "#c4a7e7" "#9ccfd8"
             update_hyprlock "#191724" "#e0def4" "#31748f" "#eb6f92"
             update_swaync "#191724" "#1f1d2e" "#e0def4" "#908caa" "#6e6a86" "#31748f" "#191724" "#eb6f92" "#9ccfd8"
+            update_helium "#191724" "#1f1d2e" "#191724" "#e0def4" "#31748f"
             ;;
         "gruvbox")
             # Hyprland
@@ -691,11 +912,14 @@ EOF
 EOF
             update_zed "Gruvbox Dark Hard"
             update_gtk "#282828" "#3c3836" "#ebdbb2" "#458588"
-            update_qt "#282828" "#3c3836" "#ebdbb2" "#458588"
+            update_qtct
+            update_kvantum "#282828" "#3c3836" "#ebdbb2" "#458588" "#928374" "#458588"
+            update_quickshell "#282828" "#3c3836" "#ebdbb2" "#928374" "#458588" "#ebdbb2" "#928374"
             update_kitty "#ebdbb2" "#282828" "#458588" "#fb4934" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c"
             update_nvim "gruvbox" "gruvbox" "#282828" "#3c3836" "#ebdbb2" "#928374" "#458588" "#fb4934" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c"
             update_hyprlock "#282828" "#ebdbb2" "#458588" "#fb4934"
             update_swaync "#282828" "#3c3836" "#ebdbb2" "#d5c4a1" "#928374" "#458588" "#282828" "#fb4934" "#b8bb26"
+            update_helium "#282828" "#3c3836" "#282828" "#ebdbb2" "#458588"
             ;;
         "tokyonight")
             # Hyprland
@@ -732,11 +956,14 @@ EOF
 EOF
             update_zed "Tokyo Night"
             update_gtk "#1a1b26" "#24283b" "#c0caf5" "#7aa2f7"
-            update_qt "#1a1b26" "#24283b" "#c0caf5" "#7aa2f7"
+            update_qtct
+            update_kvantum "#1a1b26" "#24283b" "#c0caf5" "#7aa2f7" "#565f89" "#7aa2f7"
+            update_quickshell "#1a1b26" "#24283b" "#c0caf5" "#565f89" "#7aa2f7" "#1a1b26" "#565f89"
             update_kitty "#c0caf5" "#1a1b26" "#7aa2f7" "#f7768e" "#9ece6a" "#e0af68" "#7aa2f7" "#bb9af7" "#7dcfff"
             update_nvim "tokyonight" "tokyonight" "#1a1b26" "#24283b" "#c0caf5" "#565f89" "#7aa2f7" "#f7768e" "#9ece6a" "#e0af68" "#7aa2f7" "#bb9af7" "#7dcfff"
             update_hyprlock "#1a1b26" "#c0caf5" "#7aa2f7" "#f7768e"
             update_swaync "#1a1b26" "#24283b" "#c0caf5" "#a9b1d6" "#565f89" "#7aa2f7" "#1a1b26" "#f7768e" "#9ece6a"
+            update_helium "#1a1b26" "#24283b" "#1a1b26" "#c0caf5" "#7aa2f7"
             ;;
         "matugen")
             # Generate theme from image using matugen
@@ -749,7 +976,10 @@ EOF
             if [ -n "$2" ]; then
                 image="$2"
             else
-                image=$(find "$HOME/Pictures/wallpaper" -type f 2>/dev/null | shuf -n 1 || true)
+                wallpaper_dir=$(find_wallpaper_dir || true)
+                if [ -n "${wallpaper_dir:-}" ]; then
+                    image=$(find -L "$wallpaper_dir" -type f 2>/dev/null | shuf -n 1 || true)
+                fi
             fi
             if [ -z "${image:-}" ] || [ ! -f "$image" ]; then
                 echo "No image found for matugen theme" >&2
@@ -830,7 +1060,9 @@ EOF
 
             # GTK and QT updates
             update_gtk "$surface" "$surface" "$on_surface" "$primary"
-            update_qt "$surface" "$surface" "$on_surface" "$primary"
+            update_qtct
+            update_kvantum "$surface" "$surface" "$on_surface" "$primary" "$outline" "$primary"
+            update_quickshell "$surface" "$surface" "$on_surface" "$outline" "$primary" "$on_primary" "$outline"
 
             # Kitty
             update_kitty "$on_surface" "$surface" "$primary" "$error" "$tertiary" "$secondary" "$primary" "$tertiary" "$secondary"
@@ -842,7 +1074,23 @@ EOF
             # Hyprlock
             update_hyprlock "$surface" "$on_surface" "$primary" "$error"
             update_swaync "$surface" "$surface" "$on_surface" "$outline" "$outline" "$primary" "$on_primary" "$error" "$tertiary"
+            if [ -r "$CURRENT_WALLPAPER" ]; then
+                update_helium_from_image "$(cat "$CURRENT_WALLPAPER")"
+            fi
 
+            ;;
+        "helium-wallpaper")
+            local image="$2"
+
+            if [ -z "${image:-}" ] && [ -r "$CURRENT_WALLPAPER" ]; then
+                image=$(cat "$CURRENT_WALLPAPER")
+            fi
+
+            if ! update_helium_from_image "${image:-}"; then
+                exit 1
+            fi
+
+            exit 0
             ;;
         *)
             echo "Unknown theme: $1"

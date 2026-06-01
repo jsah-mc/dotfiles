@@ -1,0 +1,58 @@
+$accent-color: #{"@accent_color"};
+$accent-bg-color: #{"@accent_bg_color"};
+$accent-fg-color: #{"@accent_fg_color"};
+$fg-color: #{"@theme_fg_color"};
+$inactive-color: #{"alpha(@theme_fg_color, 0.62)"};
+$inactive-empty-color: #{"alpha(@theme_fg_color, 0.45)"};
+$hover-bg: #{"alpha(@accent_bg_color, 0.22)"};
+
+.Workspaces {
+  padding: 0 2px 0 0;
+  margin: 0 2px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.WorkspaceButton {
+  min-width: 12px;
+  min-height: 14px;
+  padding: 0 4px;
+  margin: 0 2px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: $inactive-color;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.WorkspaceButton:hover {
+  background: $hover-bg;
+  color: $fg-color;
+  min-width: 22px;
+}
+
+.WorkspaceButton:active {
+  background: $hover-bg;
+  color: $fg-color;
+}
+
+.WorkspaceButton.active {
+  background: $accent-bg-color;
+  color: $accent-fg-color;
+  min-width: 20px;
+  padding: 0 8px;
+  min-height: 14px;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.WorkspaceButton.active:hover {
+  background: $accent-color;
+  color: $accent-fg-color;
+}
+
+.WorkspaceButton:not(.active) {
+  color: $inactive-empty-color;
+}

@@ -1,5 +1,5 @@
 return {
     terminal    = "kitty",
     fileManager = "dolphin",
-    menu        = "~/.config/rofi/applaunch/launcher.sh",
+    menu        = "bash -lc '$HOME/.config/quickshell/launcher-toggle.sh'",
 }

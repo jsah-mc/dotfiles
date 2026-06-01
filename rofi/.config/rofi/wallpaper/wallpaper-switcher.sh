@@ -8,6 +8,22 @@ current_wallpaper="$HOME/.cache/current_wallpaper"
 current_theme="$HOME/.cache/current_theme"
 theme_script="$HOME/.config/hypr/scripts/theme"
 
+find_wallpaper_dir() {
+    local candidate
+
+    for candidate in \
+        "$HOME/Pictures/wallpaper" \
+        "$HOME/Pictures/wallpapers"
+    do
+        if [[ -d "$candidate" ]]; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
 notify() {
     local title="$1"
     local message="$2"
@@ -50,14 +66,14 @@ print_wallpaper_rows() {
     done
 }
 
-if [[ ! -d "$wallpaper_dir" ]]; then
-    notify "Wallpaper" "Directory not found: $wallpaper_dir"
+if ! wallpaper_dir=$(find_wallpaper_dir); then
+    notify "Wallpaper" "Directory not found: $HOME/Pictures/wallpaper or $HOME/Pictures/wallpapers"
     exit 1
 fi
 
 mapfile -t wallpapers < <(
     cd "$wallpaper_dir" || exit 1
-    find . -path './.git' -prune -o -type f \
+    find -L . -path './.git' -prune -o -type f \
         \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \
         -printf '%P\n' | sort
 )
@@ -106,4 +122,12 @@ fi
 
 mkdir -p "$(dirname "$current_wallpaper")"
 printf '%s\n' "$wallpaper" > "$current_wallpaper"
+
+if [[ -x "$theme_script" ]]; then
+    if ! "$theme_script" helium-wallpaper "$wallpaper" >/dev/null 2>&1; then
+        notify "Wallpaper" "Applied $(basename "$wallpaper"), but Helium theme refresh failed"
+        exit 0
+    fi
+fi
+
 notify "Wallpaper" "Applied $(basename "$wallpaper")"

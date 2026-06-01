@@ -1,0 +1,95 @@
+@use "styles/Bar.scss";
+@use "styles/Launcher.scss";
+
+// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
+$fg-color: #{"@theme_fg_color"};
+$bar-fill: #{"@window_bg_color"};
+$bar-surface: #{"alpha(@window_bg_color, 0.9)"};
+$bar-surface-hover: #{"alpha(@window_bg_color, 0.96)"};
+$bar-border: #{"alpha(@theme_fg_color, 0.16)"};
+$bar-border-strong: #{"alpha(@accent_bg_color, 0.42)"};
+
+window.Bar {
+  background: transparent;
+  color: $fg-color;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: "JetBrainsMono Nerd Font Propo", "Noto Sans", sans-serif;
+
+  * {
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    text-shadow: none;
+    transition:
+      background-color 180ms ease-out,
+      color 180ms ease-out,
+      border-color 180ms ease-out,
+      min-width 180ms ease-out,
+      padding 180ms ease-out,
+      margin 180ms ease-out;
+  }
+  
+  .BarShell {
+    margin: 0;
+    min-height: 30px;
+    max-height: 30px;
+    padding: 4px 10px 2px;
+    background: $bar-fill;
+    border-bottom: 1px solid $bar-border;
+  }
+
+  .BarGroup {
+    min-height: 22px;
+    border-radius: 999px;
+    background: $bar-surface;
+    border: 1px solid $bar-border;
+  }
+
+  .BarGroup:hover {
+    background: $bar-surface-hover;
+    border-color: $bar-border-strong;
+  }
+
+  .BarGroupStart {
+    padding: 0 8px;
+    margin-right: 6px;
+  }
+
+  .BarGroupCenter {
+    padding: 0 8px;
+  }
+
+  .BarGroupEnd {
+    padding: 0 10px;
+    margin-left: 6px;
+  }
+
+  .BarGroupCenter .Workspaces {
+    margin: 0;
+  }
+
+  .BarClock > button.toggle {
+    background: transparent;
+    border: 0;
+    min-height: 20px;
+    padding: 0 4px;
+    color: $fg-color;
+  }
+
+  .BarClock > button.toggle:hover {
+    background: #{"alpha(@theme_fg_color, 0.08)"};
+    border-radius: 8px;
+  }
+
+  .BarClockLabel {
+    letter-spacing: 0;
+  }
+
+  .BarClock popover > contents {
+    border-radius: 12px;
+    border: 1px solid $bar-border;
+    background: $bar-surface-hover;
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.28);
+  }
+}

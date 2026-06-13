@@ -5,6 +5,7 @@ DOTFILE_PACKAGES=(
     hypr
     rofi
     waybar
+    quickshell
     swaync
     kitty
     tmux
@@ -14,7 +15,6 @@ DOTFILE_PACKAGES=(
     gtk
     qt5ct-kde
     qt6ct-kde
-    matugen
     Kvantum
     xsettingsd
     zsh
@@ -30,12 +30,14 @@ SYSTEM_PACKAGES=(
     hyprlock
     hypridle
     waybar
+    quickshell
     rofi
     kitty
     tmux
     neovim
     zed
-    matugen-bin
+    kde-material-you-colors
+    python-pywal
     kvantum
     xsettingsd
     swaync
@@ -195,7 +197,7 @@ stow_dotfiles() {
 
 init_theme() {
     local wallpaper="${HOME}/Pictures/wallpaper/default.jpg"
-    local theme_script="${repo_dir}/hypr/.config/hypr/scripts/theme"
+    local theme_script="${repo_dir}/quickshell/.config/quickshell/jsah/scripts/theme"
 
     if [ ! -f "$wallpaper" ]; then
         log "Skipping theme init: ${wallpaper} does not exist"
@@ -203,11 +205,11 @@ init_theme() {
     fi
 
     if [ ! -x "$theme_script" ]; then
-        chmod +x "$theme_script"
+        chmod +x "$theme_script" "${theme_script%/*}/update_theme.sh"
     fi
 
     log "Initializing theme from ${wallpaper}"
-    if ! "$theme_script" matugen "$wallpaper"; then
+    if ! "$theme_script" material-you "$wallpaper"; then
         log "Theme init failed; continuing"
     fi
 }

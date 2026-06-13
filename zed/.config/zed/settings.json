@@ -9,29 +9,40 @@
 {
   "cli_default_open_behavior": "existing_window",
   "agent_servers": {
+    "cursor": {
+      "default_config_options": {
+        "model": "claude-fable-5[thinking=true,context=300k,effort=high]"
+      },
+      "type": "registry"
+    },
     "grok-build": {
+      "default_model": "grok-build",
       "type": "registry"
     },
     "codex-acp": {
+      "default_config_options": {
+        "mode": "auto"
+      },
       "type": "registry"
     },
     "github-copilot-cli": {
       "type": "registry"
     },
     "gemini": {
+      "default_model": "gemini-2.5-pro",
       "type": "registry"
     }
   },
   "icon_theme": {
     "mode": "dark",
     "light": "Catppuccin Mocha",
-    "dark": "Matugen Dark"
+    "dark": "Gruvbox Dark Hard"
   },
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Matugen Dark",
+    "dark": "Gruvbox Dark Hard",
   },
 }

@@ -4,7 +4,7 @@
 
 set -o pipefail
 
-theme_script="$HOME/.config/hypr/scripts/theme"
+theme_script="$HOME/.config/quickshell/jsah/scripts/theme"
 config="$HOME/.config/rofi/theme-change/config.rasi"
 
 notify_error() {
@@ -33,7 +33,7 @@ if ((${#themes[@]} == 0)); then
     exit 1
 fi
 
-# Get list from theme script. It already includes 'matugen' if available.
+# Get list from theme script. It already includes 'material-you' if available.
 theme=$(printf '%s\n' "${themes[@]}" | rofi -dmenu -only-match -no-custom -i -p "Choose theme:" -config "$config")
 rofi_status=$?
 

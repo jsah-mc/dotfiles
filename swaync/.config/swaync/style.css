@@ -2,26 +2,25 @@
     all: unset;
     font-family: "JetBrainsMono Nerd Font Propo", "Noto Sans", sans-serif;
     font-size: 14px;
-    color: #cdd6f4;
+    color: #ebdbb2;
 }
 
-@define-color bg #1e1e2e;
-@define-color bg-alt #181825;
-@define-color surface #181825;
-@define-color surface-hover #6c7086;
-@define-color fg #cdd6f4;
-@define-color muted #bac2de;
-@define-color dim #6c7086;
-@define-color accent #89b4fa;
-@define-color accent-fg #11111b;
-@define-color green #a6e3a1;
-@define-color red #f38ba8;
+@define-color bg #282828;
+@define-color bg-alt #3c3836;
+@define-color surface #3c3836;
+@define-color surface-hover #928374;
+@define-color fg #ebdbb2;
+@define-color muted #d5c4a1;
+@define-color dim #928374;
+@define-color accent #458588;
+@define-color accent-fg #282828;
+@define-color green #b8bb26;
+@define-color red #fb4934;
 @define-color shadow rgba(0, 0, 0, 0.35);
 
 .control-center {
     background: alpha(@bg, 0.96);
     border: 1px solid alpha(@accent, 0.35);
-    border-radius: 12px;
     box-shadow: 0 14px 38px @shadow;
     padding: 12px;
 }
@@ -52,7 +51,6 @@
 .notification {
     background: @surface;
     border: 1px solid alpha(@accent, 0.18);
-    border-radius: 10px;
     box-shadow: 0 8px 22px @shadow;
     margin: 0;
     padding: 0;
@@ -81,7 +79,6 @@
 .notification-action {
     background: alpha(@accent, 0.14);
     color: @fg;
-    border-radius: 8px;
     margin: 0 6px 8px 0;
     padding: 7px 10px;
 }
@@ -93,7 +90,6 @@
 
 .image,
 .app-icon {
-    border-radius: 8px;
     margin-right: 10px;
 }
 
@@ -116,7 +112,6 @@
 .close-button {
     background: alpha(@red, 0.18);
     color: @red;
-    border-radius: 999px;
     margin: 6px;
     min-width: 22px;
     min-height: 22px;
@@ -138,7 +133,6 @@
 .widget-title > button {
     background: alpha(@accent, 0.14);
     color: @fg;
-    border-radius: 8px;
     padding: 6px 10px;
 }
 
@@ -155,21 +149,18 @@
 .widget-menubar {
     background: @surface;
     border: 1px solid alpha(@accent, 0.16);
-    border-radius: 10px;
     margin: 0 0 10px 0;
     padding: 10px;
 }
 
 .widget-dnd > switch {
     background: @bg-alt;
-    border-radius: 999px;
     min-width: 44px;
     min-height: 24px;
 }
 
 .widget-dnd > switch slider {
     background: @dim;
-    border-radius: 999px;
     min-width: 18px;
     min-height: 18px;
     margin: 3px;
@@ -186,7 +177,6 @@
 .widget-buttons-grid > flowbox > flowboxchild > button,
 .widget-menubar > box > button {
     background: @bg-alt;
-    border-radius: 8px;
     margin: 3px;
     padding: 8px;
 }
@@ -198,18 +188,15 @@
 
 trough {
     background: @bg-alt;
-    border-radius: 999px;
     min-height: 8px;
 }
 
 trough highlight {
     background: @accent;
-    border-radius: 999px;
 }
 
 trough slider {
     background: @accent;
-    border-radius: 999px;
     box-shadow: 0 0 0 4px alpha(@accent, 0.18);
     min-height: 16px;
     min-width: 16px;

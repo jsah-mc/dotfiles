@@ -6,7 +6,7 @@ wallpaper_dir="$HOME/Pictures/wallpaper"
 config="$HOME/.config/rofi/wallpaper/config.rasi"
 current_wallpaper="$HOME/.cache/current_wallpaper"
 current_theme="$HOME/.cache/current_theme"
-theme_script="$HOME/.config/quickshell/jsah/scripts/theme"
+theme_script="$HOME/.config/quickshell/jsah/Apperance/Scripts/theme"
 
 find_wallpaper_dir() {
     local candidate
@@ -100,20 +100,19 @@ fi
 
 wallpaper="$wallpaper_dir/${wallpapers[$selection]}"
 
-if [[ -r "$current_theme" ]] && [[ "$(cat "$current_theme")" == "material-you" || "$(cat "$current_theme")" == "matugen" ]]; then
-    if [[ ! -x "$theme_script" ]]; then
-        notify "Wallpaper" "Material You theme script is missing: $theme_script"
-        exit 1
-    fi
-
-    if ! "$theme_script" material-you "$wallpaper"; then
-        notify "Wallpaper" "Failed to apply wallpaper with material-you"
-        exit 1
-    fi
-
-    notify "Wallpaper" "Applied $(basename "$wallpaper") and regenerated material-you"
-    exit 0
+# Always use matugen (Material You) by default
+if [[ ! -x "$theme_script" ]]; then
+    notify "Wallpaper" "Theme script is missing: $theme_script"
+    exit 1
 fi
+
+if ! "$theme_script" "$wallpaper"; then
+    notify "Wallpaper" "Failed to apply wallpaper with matugen"
+    exit 1
+fi
+
+notify "Wallpaper" "Applied $(basename "$wallpaper") and regenerated material-you"
+exit 0
 
 if ! set_wallpaper "$wallpaper"; then
     notify "Wallpaper" "Failed to apply $(basename "$wallpaper")"

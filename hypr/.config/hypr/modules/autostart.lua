@@ -1,3 +1,7 @@
-hl.on("hyprland.start", function()
-    hl.exec_cmd("bash -lc 'kde-material-you-colors --dark --pywal --autostart >/dev/null 2>&1 & disown; quickshell -n --daemonize --config jsah >/dev/null 2>&1; awww-daemon; swaync'")
+-- hl.on("hyprland.start", function(
+--     hl.exec_cmd("awww-daemon; swaync")
+-- end)
+--
+hl.on("hyprland.start", function ()
+  hl.exec_cmd("qs -c noctalia-shell")
 end)

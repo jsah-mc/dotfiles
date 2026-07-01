@@ -1,0 +1,6 @@
+[config]
+
+[templates.hypr]
+input_path = "~/.config/noctalia/templates/hypr.lua"
+output_path = "~/.config/hypr/noctalia.lua"
+

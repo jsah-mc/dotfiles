@@ -83,7 +83,8 @@ alias c='clear'
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-
+export ANTHROPIC_BASE_URL=http://localhost:1234
+export ANTHROPIC_AUTH_TOKEN=lmstudio
 
 # Added by Antigravity CLI installer
 export PATH="/home/joseph/.local/bin:$PATH"
@@ -93,3 +94,8 @@ export PATH="/home/joseph/.local/bin:$PATH"
 # Source the Lazyman .nvimsbind for nvims key binding
 # shellcheck source=.config/nvim-Lazyman/.nvimsbind
 #[ -f ~/.config/nvim-Lazyman/.nvimsbind ] && source ~/.config/nvim-Lazyman/.nvimsbind
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/joseph/.lmstudio/bin"
+# End of LM Studio CLI section
+

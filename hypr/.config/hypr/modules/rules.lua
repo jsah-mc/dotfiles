@@ -19,6 +19,15 @@ hl.window_rule({
     no_focus = true,
 })
 
+-- Zoom Workplace Exceptions: Prevent window tiling and force floating
+hl.window_rule({ match = { class = "^(zoom)$" }, float = true })
+hl.window_rule({ match = { title = "^(Zoom Meeting)$" }, float = true })
+hl.window_rule({ match = { class = "^(us.zoom.Zoom)$" }, float = true }) -- For Flatpak version
+
+-- Optional: Center the main menu or popups when they launch
+hl.window_rule({ match = { class = "^(zoom)$" }, center = true })
+
+
 -- Hyprland-run windowrule
 hl.window_rule({
     name  = "move-hyprland-run",
